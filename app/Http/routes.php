@@ -14,3 +14,14 @@
 Route::resource('/', 'ArticleController',['only'=>['index']]);
 
 Route::resource('news', 'NewsController',['only'=>['index']]);
+
+Route::resource('articles', 'ArticleController',['parametres'=>[
+													
+													'articles'=>'title'
+											   	
+											   	]
+												]);
+
+Route::resource('add_article', 'ArticleController',['only'=>['create']]);
+
+

@@ -8,11 +8,23 @@ abstract class Repository {
 
 	protected $model =false;
 
-	public function get(){
+	public function get($select, $take=FALSE){
 
-		$builder=$this->model->select('*');
+		$builder=$this->model->select($select);
 		//dd($builder);
+
+		if($take){
+			$builder=$this->model->take($take);
+		}
+
 		return $builder->get();
+	}
+
+	public function one($title){
+
+		$result=$this->model->where('title',$title)->first();
+		//dd($result);
+		return $result;
 	}
 
 }

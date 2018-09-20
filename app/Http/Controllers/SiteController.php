@@ -36,7 +36,7 @@ abstract class SiteController extends Controller
 
     public function getmenu(){
 
-        $menu = $this->m_rep->get();
+        $menu = $this->m_rep->get('*');
 
         return $menu;
     }

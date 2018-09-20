@@ -20,7 +20,7 @@ class NewsController extends SiteController
 
     public function __construct(NewsRepository $n_rep){
 
-       parent::__construct();
+       parent::__construct(new \App\Repositories\MenusRepository (new \App\Menu));
        $this->template='news';
        $this->n_rep=$n_rep; 
     }
@@ -29,16 +29,17 @@ class NewsController extends SiteController
    public function index()
     {
         //
-        $news=$this->getNews();
+        $events=$this->getNews();
         //dd($news);
-        $this->vars = array_add($this->vars,'news',$news);
+        $content = view('news_content')->with('events',$events);
+        $this->vars = array_add($this->vars,'content',$content);
         return $this->RenderOutPut();
     }
 
 
     public function getNews(){
 
-        $news= $this->n_rep->getItem();
+        $news= $this->n_rep->get('*');
 
         return $news;
     }

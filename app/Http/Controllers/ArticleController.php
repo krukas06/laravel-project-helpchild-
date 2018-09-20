@@ -25,6 +25,8 @@ class ArticleController extends SiteController
        $this->a_rep=$a_rep; 
     }
 
+
+    ////////////////////////////////// Отображение списка всех статей реализована
     public function index()
     {
         //
@@ -41,7 +43,7 @@ class ArticleController extends SiteController
 
      public function getarticle(){
 
-        $article = $this->a_rep->get();
+        $article = $this->a_rep->get('*');
 
         return $article;
 
@@ -55,6 +57,7 @@ class ArticleController extends SiteController
     public function create()
     {
         //
+
     }
 
     /**
@@ -66,6 +69,7 @@ class ArticleController extends SiteController
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -74,9 +78,27 @@ class ArticleController extends SiteController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+
+
+    ////////////////////////////////Проблема с параметром
+    public function show($title)
     {
         //
+        
+        $article=$this->getarticle_content($title);
+
+        $content=view('full_text_article')->with('article',$article);
+        $this->vars = array_add($this->vars,'content',$content);
+
+        return $this->RenderOutPut();
+    }
+
+    public function getarticle_content($title){
+
+        $article_content=$this->a_rep->one($title);
+
+        return $article_content;
+
     }
 
     /**
