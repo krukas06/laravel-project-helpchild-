@@ -8,7 +8,7 @@ use App\Http\Requests;
 
 use App\Repositories\ArticleRepository;
 use App\Repositories\Repository;
-
+use App\Article;
 
 
 class ArticleController extends SiteController
@@ -58,6 +58,8 @@ class ArticleController extends SiteController
     {
         //
 
+       
+
     }
 
     /**
@@ -69,6 +71,15 @@ class ArticleController extends SiteController
     public function store(Request $request)
     {
         //
+        $content = view('article_add')->render();
+        $this->vars = array_add($this->vars,'content',$content);
+        $this->RenderOutPut();
+        $data = $request->all();
+        $article = new  Article;
+        $article = fill($data);
+        $article = save();
+
+
 
     }
 

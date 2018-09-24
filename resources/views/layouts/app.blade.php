@@ -85,6 +85,8 @@
 
     @yield('content')
 
+    @yield('contact')
+
 
     @yield('footer')
 

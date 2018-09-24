@@ -5,43 +5,77 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Repositories\NewsRepository;
-use App\Repositories\Repository;
-use App\Event;
 
-class NewsController extends SiteController
+use App\Contact;
+
+use App\Repositories\ContactRepository;
+
+use App\Repositories\Repository;
+
+use Mail;
+
+
+class ContactController extends SiteController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-
      */
 
-    public function __construct(NewsRepository $n_rep){
+
+    public function __construct(ContactRepository $c_rep){
 
        parent::__construct(new \App\Repositories\MenusRepository (new \App\Menu));
-       $this->template='news';
-       $this->n_rep=$n_rep; 
+       $this->c_rep=$c_rep;
+       $this->template = 'contact_content';
+        
     }
-    
 
-   public function index()
+    public function index(Request $request)
     {
         //
-        $events=$this->getNews();
-        //dd($news);
-        $content = view('news_content')->with('events',$events);
-        $this->vars = array_add($this->vars,'content',$content);
+        //dd($request);
+         $contacts = $this->getcontact();
+        //dd($contacts);
+        $contact=view('contact')->with('contacts',$contacts);
+        $this->vars=array_add($this->vars,'contact', $contact);
+
         return $this->RenderOutPut();
+
+        $this->validate($request, [
+            'name' => 'reqiured|max:255',
+            'email' => 'reqiured|max:255',
+            'phone' => 'reqiured|max:255',
+            'company' => 'reqiured|max:255',
+            'text' => 'reqiured',
+        ]);
+
+        $data = $request->all();
+
+        $result = Mail::send('email',['data'=>$data], function($m) use ($data){
+            $mail_admin = env('MAIL_ADMIN');
+            $m->from($data['email'], $data['name']);
+            $m->to($mail_admin,'mr_admin')->subject('Question');
+        });
+
+        if($result){
+            return redirect()->route('contact')->with('status','Сообщение отправлено');
+        }
+
+        $contacts = $this->getcontact();
+        //dd($contacts);
+        $contact=view('contact')->with('contacts',$contacts);
+        $this->vars=array_add($this->vars,'contact', $contact);
+
+        return $this->RenderOutPut();
+
     }
 
+    public function getcontact(){
+        $contacts=$this->c_rep->get('*');
 
-    public function getNews(){
-
-        $news= $this->n_rep->get('*');
-
-        return $news;
+        return $contacts;
     }
 
     /**
@@ -71,23 +105,9 @@ class NewsController extends SiteController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($title)
+    public function show($id)
     {
         //
-        $news = $this->getnews_first($title);
-
-        $content = view('full_news')->with('news',$news);
-        $this->vars = array_add($this->vars,'content',$content);
-
-        return $this->RenderOutPut();
-
-    }
-
-    public function getnews_first($title){
-
-        $news = $this->n_rep->one($title);
-
-        return $news;
     }
 
     /**

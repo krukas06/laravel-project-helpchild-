@@ -4,14 +4,18 @@
 	
 
 @foreach($events as $event)	
-<div class="card border-success mb-3" style="max-width: 18rem; margin-left: 50%; width: 400px;">
-    <div class="card-header bg-transparent border-success">Header</div>
-    <div class="card-body text-success">
-        <h5 class="card-title">{{$event->title}}</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+<div class="card-group" style="width: 1000px;">
+  <div class="card">
+    <img class="card-img-top" src="{{asset('images')}}/{{$event->img}}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{$event->title}}</h5>
+      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <a href="{{route('news.show',['title'=>$event->title])}}"><button type="button" class="btn btn-success" >Подробный просмотр</button></a>
     </div>
-    <div class="card-footer bg-transparent border-success">Footer</div>
-</div>
-@endforeach
+    <div class="card-footer">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </div>
+  </div>
+  @endforeach
 
 @endsection

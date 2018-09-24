@@ -15,6 +15,7 @@ abstract class SiteController extends Controller
     protected $vars=array();
     protected $m_rep;
     protected $a_rep;
+    protected $c_rep;
 
     public function __construct(MenusRepository $m_rep){
 

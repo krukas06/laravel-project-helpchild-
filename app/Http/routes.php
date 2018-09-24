@@ -15,6 +15,12 @@ Route::resource('/', 'ArticleController',['only'=>['index']]);
 
 Route::resource('news', 'NewsController',['only'=>['index']]);
 
+Route::resource('news', 'NewsController',['parametres'=>[
+													
+													'news'=>'title'
+											   	]
+											   	]);
+
 Route::resource('articles', 'ArticleController',['parametres'=>[
 													
 													'articles'=>'title'
@@ -22,6 +28,8 @@ Route::resource('articles', 'ArticleController',['parametres'=>[
 											   	]
 												]);
 
-Route::resource('add_article', 'ArticleController',['only'=>['create']]);
+//Route::resource('add_content', 'ArticleController');
 
+Route::match(['get','post'],'contact',['uses'=>'ContactController@index','as'=>'contact']);
 
+Route::auth('login', 'AuthController');
